@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/backend/azure-function/azure-function.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "func: host start",
+            "type": "shell",
+            "command": "func start --verbose",
+            "isBackground": true,
+            "dependsOn": "build",
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": "\\b\\B",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*",
+                        "endsPattern": "Worker process started and initialized"
+                    }
+                }
+            ]
+        }
+    ]
+}

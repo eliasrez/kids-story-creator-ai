@@ -1,0 +1,37 @@
+name: Deploy to Azure Function App
+
+on:
+  workflow_dispatch:   # Trigger manually
+  push:
+    branches:
+      - main           # Or use a release branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./backend/azure-function/azure-function.csproj
+
+      - name: Build
+        run: dotnet build ./backend/azure-function/azure-function.csproj --configuration Release --no-restore
+
+      - name: Publish project
+        run: dotnet publish ./backend/azure-function/azure-function.csproj -c Release -o ./publish
+
+      # Deploy to Azure Function App
+      - name: Deploy to Azure Functions
+        uses: azure/functions-action@v1
+        with:
+          app-name: YOUR_FUNCTIONAPP_NAME   # <-- Replace with your Azure Function App name
+          package: ./publish
+          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}

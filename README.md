@@ -30,3 +30,18 @@ A fun, creative web app where kids can create AI-generated stories and illustrat
 
 ## License
 MIT
+
+
+# to run azure function locally
+- func start
+
+## Setup Notes
+
+- In Azure Portal, go to your Function App → Deployment Center → Get Publish Profile.
+- Add it to GitHub repo secrets as:
+
+- AZURE_FUNCTIONAPP_PUBLISH_PROFILE
+
+- Replace YOUR_FUNCTIONAPP_NAME with your actual Azure Function App name.
+
+- If you want staging/prod environments, you can make separate workflows or jobs.
